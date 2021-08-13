@@ -1,0 +1,44 @@
+.embla {
+  overflow: hidden;
+  position: relative;
+}
+.embla__container {
+  display: flex;
+  width: 100%;
+}
+.embla__slide {
+  flex: 1 0 100%;
+}
+.embla__dots {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding-top: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  z-index: 15;
+  width: 60%;
+  margin-left: -30%;
+  padding-left: 0;
+  list-style: none;
+}
+
+.embla__dot {
+  background-color: rgba(0,0,0,0);
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  border: 1px solid white;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.is_selected {
+  background-color: white;
+  opacity: 1;
+}
