@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import { useState, useEffect, useCallback, MouseEventHandler } from 'react';
 import { useEmblaCarousel } from 'embla-carousel/react';
+import { mediaByIndex } from './media-by-index';
 import styles from './carousel.module.scss';
+
+const SLIDE_COUNT = 4;
+const slides: number[] = Array.from(Array(SLIDE_COUNT).keys());
 
 export const DotButton = (props: {
   selected: boolean;
@@ -17,90 +21,68 @@ export const DotButton = (props: {
 );
 
 export const Carousel = () => {
-  const [emblaRef, embla] = useEmblaCarousel({ skipSnaps: false });
+  const [emblaRef, embla] = useEmblaCarousel({
+    loop: true,
+    draggable: false,
+  });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState([0]);
+  const [disableTimer, setDisableTimer] = useState(false);
   const scrollTo = useCallback(
-    (index) => embla && embla.scrollTo(index),
+    (index) => {
+      if (embla) {
+        embla.scrollTo(index);
+        setSelectedIndex(index);
+        setDisableTimer(true);
+      }
+    },
     [embla]
   );
 
-  const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla]);
+  const scrollNext = useCallback(() => {
+    if (embla) {
+      embla.scrollNext();
+      const index = selectedIndex + 1 === SLIDE_COUNT ? 0 : selectedIndex + 1;
+      setSelectedIndex(index);
+    }
+  }, [embla, selectedIndex]);
 
   const onSelect = useCallback(() => {
     if (!embla) return;
-    setSelectedIndex(embla.selectedScrollSnap());
-  }, [embla, setSelectedIndex]);
+  }, [embla]);
 
   useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
     if (!embla) return;
     onSelect();
-    setScrollSnaps(embla.scrollSnapList());
     embla.on('select', onSelect);
-    const timer = setInterval(() => {
-      if (selectedIndex === scrollSnaps.length - 1) {
-        scrollTo(0);
-      } else {
+    if (!disableTimer) {
+      timer = setInterval(() => {
         scrollNext();
-      }
-    }, 2500);
-
+      }, 2500);
+    }
     return () => {
       clearInterval(timer);
     };
-  }, [
-    embla,
-    setScrollSnaps,
-    onSelect,
-    scrollTo,
-    scrollNext,
-    selectedIndex,
-    scrollSnaps.length,
-  ]);
+  }, [embla, onSelect, scrollNext, disableTimer]);
 
   return (
-    <>
-      <div className={styles.embla} ref={emblaRef}>
+    <div className={styles.embla}>
+      <div className={styles.embla__viewport} ref={emblaRef}>
         <div className={styles.embla__container}>
-          <div className={styles.embla__slide}>
-            <Image
-              alt='Lur terapia naturalak'
-              src='/images/imagen1.jpg'
-              width='1297'
-              height='518'
-              className={styles.img___responsive}
-            />
-          </div>
-          <div className={styles.embla__slide}>
-            <Image
-              alt='Lur terapia naturalak'
-              src='/images/imagen2.jpg'
-              width='1297'
-              height='518'
-              className={styles.img___responsive}
-            />
-          </div>
-          <div className={styles.embla__slide}>
-            <Image
-              alt='Lur terapia naturalak'
-              src='/images/imagen3.jpg'
-              width='1297'
-              height='518'
-              className={styles.img___responsive}
-            />
-          </div>
-          <div className={styles.embla__slide}>
-            <Image
-              alt='Lur terapia naturalak'
-              src='/images/imagen4.jpg'
-              width='1297'
-              height='518'
-              className={styles.img___responsive}
-            />
-          </div>
+          {slides.map((index) => (
+            <div className={styles.embla__slide} key={index}>
+              <div className={styles.embla__slide__inner}>
+                <Image
+                  alt='Lur terapia naturalak'
+                  src={mediaByIndex(index)}
+                  className={styles.embla__slide__img}
+                />
+              </div>
+            </div>
+          ))}
         </div>
         <div className={styles.embla__dots}>
-          {scrollSnaps.map((_, index) => (
+          {slides.map((index) => (
             <DotButton
               key={index}
               selected={index === selectedIndex}
@@ -109,6 +91,6 @@ export const Carousel = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };

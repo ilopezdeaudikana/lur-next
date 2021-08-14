@@ -1,14 +1,47 @@
 .embla {
-  overflow: hidden;
   position: relative;
+  background-color: #f7f7f7;
+  padding: 0;
+  max-width: 1297px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.embla__container {
-  display: flex;
+
+.embla__viewport {
+  overflow: hidden;
   width: 100%;
 }
-.embla__slide {
-  flex: 1 0 100%;
+
+.embla__container {
+  display: flex;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin-left: -10px;
 }
+
+.embla__slide {
+  position: relative;
+  min-width: 100%;
+  padding-left: 10px;
+}
+
+.embla__slide__inner {
+  position: relative;
+  overflow: hidden;
+  height: auto;
+}
+
+.embla__slide__img {
+  position: relative;
+  display: block;
+  width: auto;
+  min-height: 100%;
+  min-width: 100%;
+  max-width: none;
+}
+
 .embla__dots {
   display: flex;
   list-style: none;
