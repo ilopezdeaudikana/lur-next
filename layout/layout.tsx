@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { ReactChildren } from 'react';
+import { NavBar } from './nav-bar';
+import { Footer } from './footer';
 
 export const Layout = (props: { children: ReactChildren }) => {
   return (
@@ -11,46 +12,10 @@ export const Layout = (props: { children: ReactChildren }) => {
         <meta charSet='utf-8' />
       </Head>
 
-      <Link href='/'>
-        <a>Home</a>
-      </Link>
-      <Link href='/nosotros'>
-        <a>Nosotros</a>
-      </Link>
-      <Link href='/formacion'>
-        <a>Formación</a>
-      </Link>
-      <Link href='/medicina-china'>
-        <a>Medicina China</a>
-      </Link>
-      <Link href='/osteopatia'>
-        <a>Osteopatía</a>
-      </Link>
-      <Link href='/acupuntura'>
-        <a>Acupuntura</a>
-      </Link>
-      <Link href='/alimentacion'>
-        <a>Alimentacion energética</a>
-      </Link>
-      <Link href='/terapia-sacrocraneal'>
-        <a>Terapia Sacrocraneal</a>
-      </Link>
-      <Link href='/vendaje'>
-        <a>Vendaje Neuromuscular</a>
-      </Link>
-      <Link href='/masaje-deportivo'>
-        <a>Masaje Deportivo</a>
-      </Link>
-      <Link href='/masaje-movilizacion-articular'>
-        <a>Masaje movilización articular</a>
-      </Link>
-      <Link href='/rodillo'>
-        <a>Rodillo Caliente</a>
-      </Link>
+      <NavBar />
       <main className='main'>{props.children}</main>
-      <footer className='footer'></footer>
+      <Footer/>
     </div>
   );
 };
-// <NavBar navButtons={navButtons} />
-// <Header appTitle={appTitle} />
+
