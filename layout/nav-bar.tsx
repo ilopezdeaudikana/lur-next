@@ -59,6 +59,11 @@ export const NavBar = () => {
   const classes = useStyles();
   return (
     <nav className='navbar'>
+      <Button className={classes.button}>
+        <Link href='/articles'>
+          <a>Artículos</a>
+        </Link>
+      </Button>
       {Object.keys(menu).map((key: string) => (
         <LurMenuItem key={key} menuItem={setMenuItem(key)} />
       ))}
